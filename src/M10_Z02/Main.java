@@ -1,4 +1,4 @@
-package M10_Z2;
+package M10_Z02;
 
 import java.io.FileNotFoundException;
 
