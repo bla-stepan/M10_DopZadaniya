@@ -31,9 +31,9 @@ public class Main {
     }
 
     public static void solution(String district, int fromYear, int toYear) throws IOException {
-        String filePath = "src/M10_Z09/crop_volumes";
+        //String filePath = "src/M10_Z09/crop_volumes";
         //создаем сканер для чтения файла
-        Scanner scanner = new Scanner(new FileInputStream(filePath));
+        Scanner scanner = new Scanner(new FileInputStream("src/M10_Z09/crop_volumes"));
 
         //грузим массив
         String[] columnName = scanner.nextLine().split(";");
@@ -41,18 +41,19 @@ public class Main {
         String result = "Part;" + fromYear + ";" + toYear;
         //создаем цикл для обработки строк
         while (scanner.hasNextLine()) {
-            String[] values = scanner.nextLine().split(";");
-            if (values[1].equals(district)) {
+            String[] elements = scanner.nextLine().split(";");
+            if (elements[1].equals(district)) {
                 //отбираем данные по заданным годам для расчета индекса прироста
                 //  индекс      преобразуем в лист      индекс объекта соответсвующего значению фореар
                 int index1 = Arrays.asList(columnName).indexOf(String.valueOf(fromYear));
                 int index2 = Arrays.asList(columnName).indexOf(String.valueOf(toYear));
                 //определяем значения по индексам
-                double valueFromYear = Double.parseDouble(columnName[index1]);
-                double valueToYear = Double.parseDouble(columnName[index2]);
+                double valueFromYear = Double.parseDouble(elements[index1]);
+                double valueToYear = Double.parseDouble(elements[index2]);
                 //проверяем условие
-                if (valueFromYear*1.04 <valueToYear) {
-                    result += "\n" + columnName[0] + ";" + valueFromYear + ";" + valueToYear;
+                if (valueFromYear * 1.04 < valueToYear) {
+                    result += "\n" + elements[0] + ";" + valueFromYear + ";" + valueToYear;
+                    System.out.println(result);
                 }
             }
         }
