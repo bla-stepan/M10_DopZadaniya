@@ -27,25 +27,25 @@ public class Solve {
         }
     }
 
-    public static void solve() throws IOException {
+    public static void solve() throws IOException {//+
         //создаем сканер для чтения файла
-        Scanner scanner = new Scanner(new FileInputStream(new File("src/M10_Z11/arithetic")));
+        Scanner scanner = new Scanner(new FileInputStream(new File("src/M10_Z11/arithetic")));//+
 
         //объявляем и задаем переменные для расчетов
         int value1 = 0, value2 = 0, result = 0;
         String operator = "";
-        String stringResult = "";
+        StringBuilder stringResult = new StringBuilder();//замена на стрингбилдер
         //создаем цикл до тех пор пока есть следующая строка
-        while (scanner.hasNextLine()) {
-            stringResult = scanner.nextLine();
+        while (scanner.hasNextLine()) {//+
+            //String str = scanner.nextLine()+" ";
             //считываем в массив строку
-            String[] strings = scanner.nextLine().split(" ");
+            String[] strings = scanner.nextLine().split(" ");//в конце строки в считываемом файле должен быть пробел и наче выбрасывает ошибку
             //переводим в тип инт первый элемент массива
-            value1 = Integer.parseInt(strings[0]);
+            value1 = Integer.parseInt(strings[0]);//+
             //переводим в тип инт второй элемент массива
-            value2 = Integer.parseInt(strings[2]);
+            value2 = Integer.parseInt(strings[2]);//+
             //оператор
-            operator = strings[1];
+            operator = strings[1];//+
             //делаем решение
             switch (operator) {
                 case "+":
@@ -58,12 +58,12 @@ public class Solve {
                     result = value1 * value2;
                     break;
             }
-            stringResult = String.format("%s = %d", stringResult, result);
+            stringResult.append(value1).append(" ").append(operator).append(" ").append(value2).append(" = ").append(result).append("\n");
+            FileWriter writer = new FileWriter(new File("src/M10_Z11/answers.txt"));
+            writer.write(stringResult.toString().trim());
+            writer.flush();
         }
-        FileWriter writer = null;
-        writer = new FileWriter(new File("src/M10_Z11/answers.txt"));
-        writer.write(stringResult);
-        writer.flush();
+
 
     }
 }
