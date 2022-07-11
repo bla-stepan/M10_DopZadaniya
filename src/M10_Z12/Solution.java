@@ -63,6 +63,6 @@ public class Solution {
                 tax += quantity * price * 0.15;
             }// else System.out.println(result);
         }
-        System.out.println(String.format("tax: %.2f", tax));
+        System.out.println(String.format("tax: %.2f", tax));//подумать как сделать через округление (нужна точка)
     }
 }
