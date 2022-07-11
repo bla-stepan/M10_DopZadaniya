@@ -30,25 +30,39 @@ tax: 25.8
 public class Solution {
     public static void main(String[] args) {
         try {
-            findMerchant("q");
-        } catch (FileNotFoundException e) {
+            findMerchant("Cherevik");
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    public static void findMerchant(String name) throws FileNotFoundException {
+
+    public static void findMerchant(String name) throws IOException {
         //создаем сканер для ввода имени в метод
-        Scanner nameEnter = new Scanner(new InputStreamReader(System.in));
+        //Scanner nameEnter = new Scanner(new InputStreamReader(System.in));
 
         //создаем переменные для расчета
-        int quantity, price;
-
+        int quantity=0, price=0;
+        double tax = 0;
+        //String traderName = name.nextLine();
+        String product = "", merchant = "";
+        StringBuilder result = new StringBuilder();
         //создаем сканер для чтения файла
         Scanner scanner = new Scanner(new FileInputStream(new File("src/M10_Z12/outcome")));
 
         //создаем массив строк
-        String[] strings = scanner.nextLine().split(";");
-        System.out.println(strings);
-
-
+        String[] str = scanner.nextLine().split(";");
+        while (scanner.hasNextLine()) {
+            str = scanner.nextLine().split(";");
+            merchant = str[1];
+            product = str[2];
+            //System.out.println(str[3]);
+            quantity = Integer.parseInt(str[3]);
+            price = Integer.parseInt(str[4]);
+            if (merchant.equals(name)) {
+                System.out.print(result.append(product).append(",").append(quantity).append(",").append(price).append(",").append(quantity*price).append("\n"));
+                tax += quantity * price * 0.15;
+            }// else System.out.println(result);
+        }
+        System.out.println(String.format("tax: %.2f", tax));
     }
 }
