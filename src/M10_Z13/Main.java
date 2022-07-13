@@ -23,52 +23,115 @@ PRIVET, KAK U TEBYA DELA?
  */
 public class Main {
     public static void main(String[] args) {
-        String str = "PRIVET, KAK U TEBYA DELA?";
-
-        String[] strings = str.split("");
-        for (int i = 0; i < strings.length; i++) {
-            System.out.print(strings[i]);
+        try {
+            translate();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        System.out.println(Integer.toString(64, 2));
+        char c='A';
+        //Char
     }
 
     public static void translate() throws IOException {
         //создаем сканер для чтения сообщения для перевода
         Scanner scanner = new Scanner(new FileInputStream(new File("src/M10_Z13/messege")));
-        //создаем массив с чаровыми объектами
+        //создаем стринг билдер для формирования строчки для робота
+        StringBuilder transcoding = new StringBuilder();
         while (scanner.hasNextLine()) {
             String[] messege = scanner.nextLine().split("");
+            String simvol = "";
+            int integer=0;
             for (int i = 0; i < messege.length; i++) {
-                String simvol="";
-                switch (messege[i]){
-                    case "A": simvol="1000001"; break;
-                    case "B": simvol="1000010"; break;
-                    case "C": simvol="1000011"; break;
-                    case "D": simvol="1000100"; break;
-                    case "E": simvol="1000101"; break;
-                    case "F": simvol="1000110"; break;
-                    case "G": simvol="1000111"; break;
-                    case "H": simvol="1001000"; break;
-                    case "I": simvol="1001001"; break;
-                    case "J": simvol="1001010"; break;
-                    case "K": simvol="1001011"; break;
-                    case "L": simvol="1001100"; break;
-                    case "M": simvol="1001101"; break;
-                    case "N": simvol="1001110"; break;
-                    case "O": simvol="1001111"; break;
-                    case "P": simvol="1010000"; break;
-                    case "Q": simvol="1010001"; break;
-                    case "R": simvol="1010010"; break;
-                    case "S": simvol="1010011"; break;
-                    case "T": simvol="1010100"; break;
-                    case "U": simvol="1010101"; break;
-                    case "V": simvol="1010110"; break;
-                    case "W": simvol="1010111"; break;
-                    case "X": simvol="1011000"; break;
-                    case "Y": simvol="1011001"; break;
-                    case "Z": simvol="1011010"; break;
+                if (messege[i].equals(" ") || messege[i].equals("?") || messege[i].equals(",") || messege[i].equals("!")) {
+                    simvol = messege[i];
+                } else {
+                    switch (messege[i]) {
+                        case "A":
+                            integer = 1;
+                            break;
+                        case "B":
+                            integer = 2;//"1000010";
+                            break;
+                        case "C":
+                            integer = 3;//"1000011";
+                            break;
+                        case "D":
+                            integer = 4;//"1000100";
+                            break;
+                        case "E":
+                            integer = 5;//"1000101";
+                            break;
+                        case "F":
+                            integer = 6;//"1000110";
+                            break;
+                        case "G":
+                            integer = 7;//"1000111";
+                            break;
+                        case "H":
+                            integer = 8;//"1001000";
+                            break;
+                        case "I":
+                            integer = 9;//"1001001";
+                            break;
+                        case "J":
+                            integer = 10;//"1001010";
+                            break;
+                        case "K":
+                            integer = 11;//"1001011";
+                            break;
+                        case "L":
+                            integer = 12;//"1001100";
+                            break;
+                        case "M":
+                            integer = 13;//"1001101";
+                            break;
+                        case "N":
+                            integer = 14;//"1001110";
+                            break;
+                        case "O":
+                            integer = 15;//"1001111";
+                            break;
+                        case "P":
+                            integer = 16;//"1010000";
+                            break;
+                        case "Q":
+                            integer = 17;//"1010001";
+                            break;
+                        case "R":
+                            integer = 18;//"1010010";
+                            break;
+                        case "S":
+                            integer = 19;//"1010011";
+                            break;
+                        case "T":
+                            integer = 20;//"1010100";
+                            break;
+                        case "U":
+                            integer = 21;//"1010101";
+                            break;
+                        case "V":
+                            integer = 22;//"1010110";
+                            break;
+                        case "W":
+                            integer = 23;//"1010111";
+                            break;
+                        case "X":
+                            integer = 24;//"1011000";
+                            break;
+                        case "Y":
+                            integer = 25;//"1011001";
+                            break;
+                        case "Z":
+                            integer = 26;//"1011010";
+                            break;
+                    }
+                simvol=Integer.toString(integer+64, 2);
                 }
+
+                transcoding.append(simvol);
             }
         }
-
+        System.out.println(transcoding);
     }
 }
