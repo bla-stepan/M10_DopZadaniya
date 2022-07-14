@@ -25,20 +25,22 @@ public class Main {
     public static void main(String[] args) {
         try {
             translate();
-        } catch (IOException e) {
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            translateSF();
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    public static void translate() throws IOException {
-        //создаем сканер для чтения сообщения для перевода
-        Scanner scanner = new Scanner(new FileInputStream(new File("src/M10_Z13/messege")));
-        //создаем стринг билдер для формирования строчки для робота
-        StringBuilder transcoding = new StringBuilder();
+    public static void translate() throws FileNotFoundException {
+        Scanner scanner = new Scanner(new FileInputStream(new File("src/M10_Z13/messege")));//создаем сканер для чтения сообщения для перевода
+        StringBuilder transcoding = new StringBuilder();//создаем стринг билдер для формирования строчки для робота
         while (scanner.hasNextLine()) {
             String[] messege = scanner.nextLine().split("");
             String simvol = "";
-            int integer = 0;
             for (int i = 0; i < messege.length; i++) {
                 char cr = messege[i].charAt(0);
                 if (messege[i].equals(" ") || messege[i].equals("?") || messege[i].equals(",") || messege[i].equals("!")) {
@@ -50,5 +52,31 @@ public class Main {
             }
         }
         System.out.println(transcoding);
+    }
+
+    public static void translateSF() throws FileNotFoundException {
+        Scanner scanner = new Scanner(new FileInputStream(new File("src/M10_Z13/messege")));
+        String[] binLetters = ("1000001;1000010;1000011;1000100;1000101;1000110;1000111;1001000;1001001;" +
+                "1001010;1001011;1001100;1001101;1001110;1001111;1010000;1010001;1010010;1010011;1010100;" +
+                "1010101;1010110;1010111;1011000;1011001;1011010").split(";");
+        String[] englishLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+        String maasege = "";
+        while (scanner.hasNextLine()) {
+            String stringMassege = scanner.nextLine();
+            String[] arrey = stringMassege.split(";");
+            for (String symbol : arrey) {
+                int index = findSymbol(symbol, englishLetters);
+                maasege += index != -1 ? binLetters[index] : symbol;
+            }
+            maasege += "\n";
+        }
+        System.out.println(maasege.trim());
+    }
+
+    private static int findSymbol(String symbol, String[] engLetters) {
+        for (int i = 0; i < engLetters.length; i++) {
+            if (engLetters[i].equals(symbol)) return i;
+        }
+        return -1;
     }
 }
