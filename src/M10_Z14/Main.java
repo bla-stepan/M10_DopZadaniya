@@ -28,21 +28,37 @@ import java.util.Scanner;
 Для данного файла ответ будет: 1204
  */
 public class Main {
-    public static void main(String[] args) {
-
+    public static void main(String[] args) throws FileNotFoundException{
+        System.out.println(new Main().findMaxQuantity());
     }
 
-    public static void findMaxQuantity() throws FileNotFoundException {
+    public int findMaxQuantity() throws FileNotFoundException {
         //создаем сканер для чтения файла
         Scanner scanner = new Scanner(new FileInputStream(new File("src/M10_Z14/forest")));
-        //создаем массив строк
+        //создаем двухуровневый массив
+        int[][] forest = new int[10][10];
+        int k = 0;
+        //заполняем массив лес значениями
         while (scanner.hasNextLine()) {
             //создали массив строк
             String[] quantity = scanner.nextLine().split(";");
-            int[] quantityInt = new int[9];
+            //загружаем данные по к ряду.
             for (int i = 0; i < 10; i++) {
-                quantityInt[i] = Integer.parseInt(quantity[i]);
+                forest[k][i] = Integer.parseInt(quantity[i]);
             }
+            k++;
         }
+        for (int i = 1; i < 10; i++) {
+            forest[i][0] += forest[i - 1][0];
+            forest[0][i] += forest[0][i - 1];
+        }
+        for (int i = 1; i < 10; i++) {
+            for (int j = 1; j < 10; j++) {
+                System.out.print(forest[i][j]+", ");
+                forest[i][j] += Math.max(forest[i - 1][j], forest[i][j - 1]);
+            }
+            System.out.println("");
+        }
+        return forest[9][9];
     }
 }
