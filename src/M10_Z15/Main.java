@@ -3,7 +3,10 @@ package M10_Z15;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
+import java.util.OptionalInt;
 import java.util.Scanner;
+import java.util.stream.IntStream;
 
 /*Задача 15
 Деревья, высаженные вокруг поселка, выросли неожиданно быстро. И теперь они загораживают слишком много солнца.
@@ -27,6 +30,14 @@ public class Main {
         int treeSum=0;
         Scanner scanner = new Scanner(new FileInputStream(new File("src/M10_Z15/trees")));
         String[] strings = scanner.nextLine().split(" ");
+        //найти максимум в массиве
+        int[] ints = new int[strings.length];
+        for (int i = 0; i < strings.length; i++) {
+            ints[i]=Integer.parseInt(strings[i]);
+        }
+        IntStream intStream = Arrays.stream(ints);
+        OptionalInt optionalInt = intStream.max();
+        int max = optionalInt.getAsInt();
 
         return treeSum;
     }
