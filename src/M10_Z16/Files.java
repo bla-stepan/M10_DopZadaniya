@@ -3,14 +3,14 @@ package M10_Z16;
 public class Files {
     String fileName;
     String fileExpansion;
-    int volume;
+    int size;
     String volumeUnit;
 
     public Files (){};
     public Files(String fileName, String fileExpansion, int volume) {
         this.fileName = fileName;
         this.fileExpansion = fileExpansion;
-        this.volume = volume;
+        this.size = volume;
         //this.volumeUnit = volumeUnit;
     }
 
@@ -30,12 +30,12 @@ public class Files {
         this.fileExpansion = fileExpansion;
     }
 
-    public int getVolume() {
-        return volume;
+    public int getSize() {
+        return size;
     }
 
-    public void setVolume(int volume) {
-        this.volume = volume;
+    public void setSize(int size) {
+        this.size = size;
     }
 
     public String getVolumeUnit() {

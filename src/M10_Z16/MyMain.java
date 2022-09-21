@@ -1,7 +1,6 @@
 package M10_Z16;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.sql.Array;
 import java.util.Scanner;
 
@@ -23,55 +22,125 @@ public class MyMain {
     private static final String files = "src/M10_Z16/files";
 
     public static void main(String[] args) throws FileNotFoundException {
+        //создаем сканер
         Scanner scanner = new Scanner(new FileInputStream(files));
-
-        //создаем массивы для всех типов файлов
-//        String[] fileTxt =new String[10];
-//        String[] fileBmp =new String[10];
-//        String[] fileZip =new String[10];
-
-
-        //while (scanner.hasNextLine()) {
-        //загоняем в массив стоки про файлы
-        String[] filesInfo = scanner.nextLine().split("\n");
-
-
-        for (int i = 0; i < filesInfo.length; i++) {
-            System.out.println("FI(" + filesInfo[i] + ") ");
+        //создаем массив для типов файлов
+        String[] fileTXT = new String[100];
+        String[] fileZIP = new String[100];
+        String[] fileBMP = new String[100];
+        //создаем переменные для подсчета занимаемого мета
+        int sizeTXT = 0;
+        int sizeBMP = 0;
+        int sizeZIP = 0;
+        //создаем счетчики для помещения файлов в массив
+        int countTXT = 0;
+        int countBMP = 0;
+        int countZIP = 0;
+        //пока есть следующая строка
+        while (scanner.hasNextLine()) {
+            //загоняем в массив стоки про файлы
+            String[] filesInfo = scanner.nextLine().split(" ");
+            //получаем параметры файла
+            //имя файлв
+            String fileName = filesInfo[0];
+            System.out.println(fileName);
+            //тип файла
+            String fileType = fileName.substring(1+fileName.indexOf('.')).toLowerCase();
+            System.out.println(fileType);
+            //размер файла
+            int size = fileSize(Integer.parseInt(filesInfo[1]), filesInfo[2]);
+            //загоняем данные в массив
+            switch (fileType) {
+                case "txt":
+                    fileTXT[countTXT] = fileName;//загоняем название файла в массив для создания группы
+                    countTXT++;//счетчик элемента в массиве
+                    sizeTXT += size;
+                    break;
+                case "zip":
+                    fileZIP[countZIP] = fileName;
+                    countZIP++;
+                    sizeZIP += size;
+                    break;
+                case "bmp":
+                    fileBMP[countBMP] = fileName;
+                    countBMP++;
+                    sizeBMP += size;
+                    break;
+            }
         }
-        int i = 0;
-        fileBuilder(filesInfo, String.format("file%s", i));
-        //}
-        //String str = filesInfo[0];
+        //проверка
+        for (String str : fileTXT) {
+            if (str != null) {
+                System.out.print(str);
+            }
+        }
+        filesListPrint(fileTXT);
+    }
 
+    private static void filesListPrint(String[] fileArray){
+        //создаем файл
+        File file = new File("src/M10_Z16/output.txt");
+        try {
+            FileOutputStream fileOutputStream = new FileOutputStream("output.txt");
+            Writer writer = new FileWriter(file, fileArray)
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
     }
 
-    private static Files fileBuilder(String[] fileOptions, String fileObjectName) {
-        String[] fileOpt = fileOptions[0].split(" ");
-        //StringBuilder sb = new StringBuilder(fileOpt[0]);
-        for (String str: fileOpt) {
-            System.out.println(str);
+
+    //метод приведения к нужным единицам
+    private static String sizeUnit(int sizeFiles){
+        String unit;
+        if (sizeFiles/1024<1){
+            unit=sizeFiles+" B";
+        }else if(sizeFiles/1024/1024<1){
+            unit=sizeFiles/1024+" KB";
+        }else {
+            unit=sizeFiles/1024/1024+" MB";
         }
-        String fileName = fileOpt[0].trim().substring(0, fileOpt[0].length() - 4);
-        System.out.println(fileName);
-        String fileExpansion = fileOpt[0].trim().substring(fileOpt[0].length() - 3);
-        System.out.println(fileExpansion);
-//        System.out.println(fileOpt[1]);
-        int volume = Integer.parseInt(fileOpt[1].trim());
-        switch (fileOpt[2]) {
-            case "KB":
-                volume = volume * 1024;
-                break;
-            case "MB":
-                volume = volume * 1024*1024;
-                break;
-            default:
-                volume = volume;
-                break;
+        return unit;
+    }
+
+    //метод приведения к байтам
+    private static int fileSize(int size, String fileUnit) {
+        if (fileUnit.equals("KB")) {
+            size *= 1024;
+        } else if (fileUnit.equals("MB")) {
+            size *= 1024 * 1024;
         }
-        System.out.println(volume);
-        return new Files(fileName, fileExpansion, volume);
+        System.out.println(size);
+        return size;
     }
 }
+
+//    private static Files fileBuilder(String[] fileOptions, String fileObjectName) {
+//        String[] fileOpt = fileOptions[0].split(" ");
+//        //StringBuilder sb = new StringBuilder(fileOpt[0]);
+//        for (String str: fileOpt) {
+//            System.out.println(str);
+//        }
+//        String fileName = fileOpt[0].trim().substring(0, fileOpt[0].length() - 4);
+//        System.out.println(fileName);
+//        String fileExpansion = fileOpt[0].trim().substring(fileOpt[0].length() - 3);
+//        System.out.println(fileExpansion);
+////        System.out.println(fileOpt[1]);
+//        int volume = Integer.parseInt(fileOpt[1].trim());
+//        switch (fileOpt[2]) {
+//            case "KB":
+//                volume = volume * 1024;
+//                break;
+//            case "MB":
+//                volume = volume * 1024*1024;
+//                break;
+//            default:
+//                volume = volume;
+//                break;
+//        }
+//        System.out.println(volume);
+//        return new Files(fileName, fileExpansion, volume);
+//    }
+
 
