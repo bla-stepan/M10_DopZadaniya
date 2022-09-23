@@ -1,7 +1,10 @@
 package M10_Z16;
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Scanner;
 
 //предлагаемое решение задания 16
@@ -10,9 +13,9 @@ public class SFMain {
         Scanner scanner = new Scanner(new FileInputStream("src/M10_Z16/files"));
 
         //создаем массивы для каждого типа файлов
-        String[] fileTxt = new String[100];
-        String[] fileZip = new String[100];
-        String[] fileBmp = new String[100];
+        String[] tempTxt = new String[100];
+        String[] tempZip = new String[100];
+        String[] tempBmp = new String[100];
 
         //создаем счетчики байт для всех типов файлов
         int zipB = 0;
@@ -40,7 +43,75 @@ public class SFMain {
                 size *= 1024 * 1024;
             }
 
+            //добавляем файла в массив
+            if (type.equals("bmp")) {
+                tempBmp[bmpCount] = name;
+                bmpCount++;
+                bmpB += size;
+            } else if (type.equals("txt")) {
+                tempTxt[txtCount] = name;
+                txtCount++;
+                txtB += size;
+            } else if (type.equals("zip")) {
+                tempZip[zipCount] = name;
+                zipCount++;
+                zipB = size;
+            }
         }
+        //создаем массивы для типов файлов
+        String[] txt = new String[txtCount];
+        String[] bmp = new String[bmpCount];
+        String[] zip = new String[zipCount];
 
+        //если значение count больше или равно 0 то копируем начиная с 0 элементы из массива темп и вставляем в 0 позицию массива txt.
+        if (txtCount >= 0) System.arraycopy(tempTxt, 0, txt, 0, txtCount);
+        if (bmpCount >= 0) System.arraycopy(tempBmp, 0, bmp, 0, bmpCount);
+        if (zipCount >= 0) System.arraycopy(tempZip, 0, zip, 0, zipCount);
+
+        //сортируем массивы
+        Arrays.sort(txt);
+        Arrays.sort(bmp);
+        Arrays.sort(zip);
+
+        //переделываем единицы измерения байтов
+        String[] zipArr = convertToMaxUnits(zipB);
+        String[] txtArr = convertToMaxUnits(txtB);
+        String[] bmpArr = convertToMaxUnits(bmpB);
+
+        String resultFinal = "";
+        resultFinal += buildResultString(bmp, bmpArr);
+        resultFinal += buildResultString(txt, txtArr);
+        resultFinal += buildResultString(zip, zipArr);
+
+        FileWriter fileWriter = new FileWriter(new File("src/M10_Z16/output.txt"), false);
+        fileWriter.write(resultFinal.trim());
+        fileWriter.flush();
+    }
+
+    //метод конвертации максимального размера файлов
+    public static String[] convertToMaxUnits(int bytes) {
+        //создаем массив дробных значений
+        double[] bytesToUnits = {(double) bytes, (double) bytes / 1024, (double) bytes / (1024 * 1024)};
+        String nowType = "B";
+        if (bytesToUnits[2] >= 0.5) {
+            nowType = "MB";
+        } else if (bytesToUnits[1] >= 0.5) {
+            nowType = "KB";
+        }
+        if (nowType.equals("B")) return new String[]{bytesToUnits[0] + "", nowType};
+        else if (nowType.equals("KB")) return new String[]{Math.round(bytesToUnits[1]) + "", nowType};
+        else return new String[]{Math.round(bytesToUnits[0]) + "", nowType};
+    }
+
+    //метод построение строки результата
+    public static String buildResultString(String[] fileArr, String[] units) {
+        String result = "";
+        if (fileArr.length > 0) {
+            for (String str : fileArr) {
+                result += str + "\n";
+            }
+            result += "=============\n" + units[0] + " " + units[1] + " " + "\n\n";
+        }
+        return result;
     }
 }

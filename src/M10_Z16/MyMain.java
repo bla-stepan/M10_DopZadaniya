@@ -2,6 +2,7 @@ package M10_Z16;
 
 import java.io.*;
 import java.sql.Array;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /*
@@ -74,36 +75,41 @@ public class MyMain {
                 System.out.print(str);
             }
         }
-        filesListPrint(fileTXT);
+
+        resultStringToOutput(fileTXT, "txt", sizeTXT, countTXT);
     }
 
     private static void filesListPrint(String[] fileArray){
         //создаем файл
         File file = new File("src/M10_Z16/output.txt");
-        try {
-            FileOutputStream fileOutputStream = new FileOutputStream("output.txt");
-            Writer writer = new FileWriter(file, fileArray)
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            FileOutputStream fileOutputStream = new FileOutputStream("output.txt");
+//            Writer writer = new FileWriter(file, fileArray)
+//
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
 
     }
-
+    //метод построения строки результата
+    private static  String resultStringToOutput(String[] files, String type, int size, int count){
+        String[] fileArr = new String[count];//создаем новый массив
+        System.arraycopy(files, 0, fileArr, 0, count);//перекопируем из старого
+        Arrays.sort(fileArr);//сортируем
+        System.out.println(String.valueOf(fileArr));
+        return "";
+    }
 
     //метод приведения к нужным единицам
     private static String sizeUnit(int sizeFiles){
-        String unit;
-        if (sizeFiles/1024<1){
-            unit=sizeFiles+" B";
-        }else if(sizeFiles/1024/1024<1){
-            unit=sizeFiles/1024+" KB";
-        }else {
-            unit=sizeFiles/1024/1024+" MB";
+        String unit = sizeFiles+" B";
+        if (sizeFiles/(1024+1024)>=0.5){
+            unit=Math.round(sizeFiles/(1024+1024))+" MB";
+        }else if(sizeFiles/1024>=0.5){
+            unit=Math.round(sizeFiles/1024)+" KB";
         }
         return unit;
     }
-
     //метод приведения к байтам
     private static int fileSize(int size, String fileUnit) {
         if (fileUnit.equals("KB")) {
